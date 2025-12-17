@@ -1,5 +1,10 @@
 package model;
 
+/**
+ * Represents a menu item in the Online Food Ordering System.
+ * Each menu item has a name and a price.
+ */
+
 public class MenuItem {
 
 private String name;
