@@ -2,7 +2,7 @@ package model;
 
 /**
  * Customer class.
- * Inherits basic user information from User.
+ * Inherits user information from User.
  * Adds address and phone details.
  */
 
