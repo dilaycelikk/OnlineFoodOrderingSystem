@@ -15,8 +15,10 @@ import payment.CashPayment;
 import payment.CreditCardPayment;
 
 /**
- * Console-based food ordering system.
+ * Runs the ordering system.
+ * Shows the menu and creates orders.
  */
+
 public class OrderingSystem {
 
     public void run() {
@@ -44,7 +46,10 @@ public class OrderingSystem {
 
             int choice = readInt(sc, "Choose (0 or item id): ");
 
-            // 0 -> finish (but if cart is empty, force user to add at least one product)
+            /**
+             * Checks if the user can finish the order.
+             * Prevents finishing when the cart is empty.
+             */
             if (choice == 0) {
                 if (order.getTotal() == 0) {
                     System.out.println("Cart is empty! Please add a product.");
@@ -78,8 +83,9 @@ public class OrderingSystem {
         }
 
         order.placeOrder();
-        // sc.close(); // do not close System.in
     }
+    
+    /** Prints menu items grouped by category. */
 
     private void printMenu(Map<Integer, MenuItem> menu) {
         System.out.println("\n=== MENU ===\n");
@@ -87,7 +93,7 @@ public class OrderingSystem {
         ArrayList<Integer> ids = new ArrayList<>(menu.keySet());
         Collections.sort(ids);
 
-        // Group by category in order
+       
         Map<String, ArrayList<MenuItem>> grouped = new LinkedHashMap<>();
         for (int id : ids) {
             MenuItem it = menu.get(id);
