@@ -12,7 +12,7 @@ public class Order {
     private ArrayList<MenuItem> cart;
     private Payment payment;
 
-    // ✅ order time + random delivery time (30-45 min) + order number
+    
     private LocalDateTime orderTime;
     private int deliveryMinutes;
     private int orderNumber;
@@ -24,8 +24,8 @@ public class Order {
 
         Random rnd = new Random();
         this.orderTime = LocalDateTime.now();
-        this.deliveryMinutes = rnd.nextInt(16) + 30;   // 30-45
-        this.orderNumber = rnd.nextInt(9000) + 1000;   // 1000-9999
+        this.deliveryMinutes = rnd.nextInt(16) + 30;   
+        this.orderNumber = rnd.nextInt(9000) + 1000;   
     }
 
     public void addItem(MenuItem item) {
@@ -84,3 +84,4 @@ public class Order {
         System.out.println("\nThank you for your order!");
     }
 }
+
