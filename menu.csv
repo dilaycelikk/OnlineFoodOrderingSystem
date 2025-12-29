@@ -1,0 +1,21 @@
+id;category;name;price;content
+1;PIZZA;Margherita;200.0;Tomato sauce, mozzarella cheese and basil.
+2;PIZZA;Pepperoni;240.0;Tomato sauce, mozzarella cheese and pepperoni.
+
+3;BURGER;Classic Cheeseburger;180.0;Beef burger with cheese, pickles and lettuce.
+4;BURGER;Chicken Burger;170.0;Fried chicken burger with lettuce and mayo.
+
+5;PASTA;Spaghetti Bolognese;260.0;Spaghetti with meat sauce and cheese.
+6;PASTA;Chicken Alfredo;280.0;Pasta with creamy sauce and chicken.
+
+7;SOUP;Tomato Soup;80.0;Hot tomato soup with bread.
+8;SOUP;Chicken Soup;90.0;Chicken soup with vegetables.
+
+9;SALAD;Chicken Caesar Salad;140.0;Salad with chicken, cheese and sauce.
+10;SALAD;Greek Salad;120.0;Salad with tomato, cucumber and cheese.
+
+11;DESSERT;Cheesecake;120.0;Cheesecake with strawberry sauce.
+12;DESSERT;Tiramisu;130.0;Coffee dessert with cream.
+
+13;DRINK;Ice Tea;45.0;Cold ice tea, 330 ml.
+14;DRINK;Cola;45.0;Cold cola drink, 330 ml.
