@@ -1,25 +1,42 @@
 package model;
 
 /**
- * Represents a menu item in the Online Food Ordering System.
- * Each menu item has a name and a price.
+ * Represents one menu item (id, category, name, price, content).
  */
 
 public class MenuItem {
+    private int id;
+    private String category;
+    private String name;
+    private double price;
+    private String content;
 
-private String name;
-private double price;
+    public MenuItem(int id, String category, String name, double price, String content) {
+        this.id = id;
+        this.category = category;
+        this.name = name;
+        this.price = price;
+        this.content = content;
+    }
 
-public MenuItem(String name, double price) {
-    this.name = name;
-    this.price = price;
+    public int getId() {
+        return id;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public String getContent() {
+        return content;
+    }
 }
 
-public String getName() { 
-    return name; 
-}
-
-public double getPrice() { 
-    return price; 
-}
-}
