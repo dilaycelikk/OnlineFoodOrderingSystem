@@ -28,7 +28,7 @@ public class OrderingSystem {
 
         String name = readName(sc, "Full Name: ");
         String email = readEmail(sc, "Email: ");
-        String address = readNonEmpty(sc, "Address: ");
+        String address = readAddress(sc, "Address: ");
         String phone = readPhone(sc, "Phone: ");
 
         Customer customer = new Customer(name, email, address, phone);
@@ -181,6 +181,26 @@ public class OrderingSystem {
             System.out.println("Phone must be digits only (10-15 digits)!");
         }
     }
+     
+    private String readAddress(Scanner sc, String prompt) {
+        while (true) {
+            String a = readNonEmpty(sc, prompt);
+
+            if (a.length() < 5) {
+                System.out.println("Address is too short!");
+                continue;
+            }
+
+            for (int i = 0; i < a.length(); i++) {
+                if (Character.isLetter(a.charAt(i))) {
+                    return a;
+                }
+            }
+
+            System.out.println("Address cannot be only numbers!");
+        }
+    }
+
 
     private int readInt(Scanner sc, String prompt) {
         while (true) {
