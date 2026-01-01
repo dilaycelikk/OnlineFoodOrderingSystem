@@ -25,7 +25,6 @@ public class OrderingSystem {
         Scanner sc = new Scanner(System.in);
 
         System.out.println("Welcome to the Chef's Corner");
-
         String name = readName(sc, "Full Name: ");
         String email = readEmail(sc, "Email: ");
         String address = readAddress(sc, "Address: ");
