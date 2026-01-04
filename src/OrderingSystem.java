@@ -4,7 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
-import java.util.Set;
+import java.util.Set; 
 
 import model.Customer;
 import model.MenuCsvReader;
@@ -14,67 +14,104 @@ import model.Restaurant;
 import payment.CashPayment;
 import payment.CreditCardPayment;
 
-/**
- * Runs the ordering system.
- * Shows the menu and creates orders.
- */
-
 public class OrderingSystem {
 
     public void run() {
-        Scanner sc = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in); 
 
-        System.out.println("Welcome to the Chef's Corner");
+        System.out.println("WELCOME TO THE CHEF'S CORNER");
+
+        // get customer information from user
         String name = readName(sc, "Full Name: ");
         String email = readEmail(sc, "Email: ");
         String address = readAddress(sc, "Address: ");
         String phone = readPhone(sc, "Phone: ");
 
+        
+        // create objects
         Customer customer = new Customer(name, email, address, phone);
         Restaurant restaurant = new Restaurant("Chef's Corner", 4.6);
         Order order = new Order(customer, restaurant);
-
+        
+        
+       // load menu from the menu.csv
         Map<Integer, MenuItem> menu = MenuCsvReader.loadAsMap("menu.csv");
         if (menu.isEmpty()) {
-            System.out.println("Menu could not be loaded! Check menu.csv location.");
+            System.out.println("menu.csv not found!");
             return;
         }
 
+        String lastMessage = ""; 
+
+      
         while (true) {
             printMenu(menu);
+            order.showCart();
 
-            int choice = readInt(sc, "Choose (0 or item id): ");
+            
+            if (!lastMessage.isEmpty()) {
+                System.out.println(lastMessage);
+                lastMessage = ""; 
+            }
 
-            /**
-             * Checks if the user can finish the order.
-             * Prevents finishing when the cart is empty.
-             */
+            int choice = readInt(sc, "ID to Add | -ID to Remove | 0 to Pay: ");
+
+            //finish order
             if (choice == 0) {
                 if (order.getTotal() == 0) {
-                    System.out.println("Cart is empty! Please add a product.");
+                    lastMessage = " Cart is empty! Please add items from the menu. ";
                     continue;
                 }
                 break;
             }
 
+             // negative numbers remove items
+            if (choice < 0) {
+                if (order.getTotal() == 0) {
+                    lastMessage = " Cart is empty! Nothing to remove.";
+                    continue; 
+                }
+                int idToRemove = -choice;
+                boolean removed = order.removeItem(idToRemove);
+                
+                if (removed) {
+                    lastMessage = " Removed item ID: " + idToRemove;
+                } else {
+                    lastMessage = " Item not found in cart.";
+                }
+                continue; 
+            }
+
+            // positive numbers add items
             MenuItem selected = menu.get(choice);
             if (selected == null) {
-                System.out.println("Wrong choice!");
+                lastMessage = " Invalid Product ID.";
                 continue;
             }
 
             order.addItem(selected);
-
-            System.out.println("Added: [" + selected.getId() + "] " + selected.getName());
-            System.out.println("Total: " + order.getTotal() + " TL");
-
-            boolean more = readYesNo(sc, "Add another product? (y/n): ");
-            if (!more) {
-                break;
-            }
+            lastMessage = " Added to cart: " + selected.getName();
         }
 
-        int payChoice = readIntInSet(sc, "Payment (1-Cash, 2-Credit Card): ", Set.of(1, 2));
+       
+        System.out.println("\n--------------------------------");
+        System.out.println("USE CODE 'SPECIAL10' TO GET 10% OFF YOUR FIRST ORDER!");
+        System.out.print(" Enter Coupon Code or press Enter): ");
+        System.out.flush();
+        
+        String coupon = sc.nextLine().trim();
+        
+        if (coupon.equalsIgnoreCase("SPECIAL10")) {
+            order.applyDiscount();
+            System.out.println("SUCCESS: 10% Discount Applied!");
+            System.out.println(" New Total: " + order.getTotal() + " TL");
+        } else {
+            if(!coupon.isEmpty()) System.out.println(" Coupon invalid or expired.");
+        }
+        System.out.println("--------------------------------\n");
+
+        
+        int payChoice = readIntInSet(sc, "Payment Method (1-Cash, 2-Card): ", Set.of(1, 2));
         if (payChoice == 1) {
             order.setPayment(new CashPayment());
         } else {
@@ -84,15 +121,12 @@ public class OrderingSystem {
         order.placeOrder();
     }
     
-    /** Prints menu items grouped by category. */
-
     private void printMenu(Map<Integer, MenuItem> menu) {
-        System.out.println("\n=== MENU ===\n");
+        System.out.println("\n========== MENU ==========");
 
         ArrayList<Integer> ids = new ArrayList<>(menu.keySet());
         Collections.sort(ids);
 
-       
         Map<String, ArrayList<MenuItem>> grouped = new LinkedHashMap<>();
         for (int id : ids) {
             MenuItem it = menu.get(id);
@@ -101,27 +135,14 @@ public class OrderingSystem {
 
         for (Entry<String, ArrayList<MenuItem>> entry : grouped.entrySet()) {
             String category = entry.getKey();
-            System.out.println(category.toUpperCase());
+            System.out.println("\n--- " + category + " ---"); 
 
             for (MenuItem it : entry.getValue()) {
-                System.out.println(it.getId() + ") " + it.getName() + " - " + it.getPrice() + " TL");
-                System.out.println("   -> " + shorten(it.getContent(), 60));
+                System.out.println("[" + it.getId() + "] " + it.getName() + " - " + it.getPrice() + " TL");
+                System.out.println("    (" + it.getContent() + ")");
             }
-            System.out.println();
         }
-
-        System.out.println("0) Finish");
-    }
-
-    private String shorten(String s, int maxLen) {
-        if (s == null) {
-            return "";
-        }
-        s = s.trim();
-        if (s.length() <= maxLen) {
-            return s;
-        }
-        return s.substring(0, maxLen - 3) + "...";
+        System.out.println("==========================");
     }
 
     // ---------- SAFE INPUTS ----------
@@ -133,7 +154,6 @@ public class OrderingSystem {
 
             String name = sc.nextLine().trim();
 
-         
             if (name.matches("[A-Za-zÇĞİÖŞÜçğıöşü ]{2,50}")) {
                 return name;
             }
@@ -156,7 +176,8 @@ public class OrderingSystem {
             System.out.println("Empty input is not allowed!");
         }
     }
-
+    
+    // email must contain @ and .
     private String readEmail(Scanner sc, String prompt) {
         while (true) {
             String e = readNonEmpty(sc, prompt);
@@ -224,23 +245,6 @@ public class OrderingSystem {
             }
 
             System.out.println("Wrong choice!");
-        }
-    }
-
-    private boolean readYesNo(Scanner sc, String prompt) {
-        while (true) {
-            System.out.print(prompt);
-            System.out.flush();
-
-            String s = sc.nextLine().trim().toLowerCase();
-            if (s.equals("y") || s.equals("yes")) {
-                return true;
-            }
-            if (s.equals("n") || s.equals("no")) {
-                return false;
-            }
-
-            System.out.println("Please type y or n!");
         }
     }
 }
