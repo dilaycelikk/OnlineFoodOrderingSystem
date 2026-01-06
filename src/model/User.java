@@ -1,11 +1,11 @@
 package model;
 
 /**
- * Represents a user in the system.
- * Stores name and email information.
+ * Abstract class for users.
+ * Stores common info like name and email.
  */
 
-public class User {
+public abstract class User {
 
 	private String name;
     private String email;
