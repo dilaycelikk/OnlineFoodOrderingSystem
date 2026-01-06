@@ -96,7 +96,7 @@ public class OrderingSystem {
        
         System.out.println("\n--------------------------------");
         System.out.println("USE CODE 'SPECIAL10' TO GET 10% OFF YOUR FIRST ORDER!");
-        System.out.print(" Enter Coupon Code or press Enter): ");
+        System.out.print(" Enter Coupon Code or press Enter: ");
         System.out.flush();
         
         String coupon = sc.nextLine().trim();
